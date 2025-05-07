@@ -1,13 +1,15 @@
+package br.com.biblioteca.view;
+
 import javax.swing.*;
-import beans.Livros;
-import dao.LivrosDAO;
+import br.com.biblioteca.dao.LivroDAO;
+import br.com.biblioteca.model.Livro;
 import javax.swing.JOptionPane;
 
-public class TelaCadastroLivros extends JFrame {
+public class TelaCadastroLivro extends JFrame {
 
     private JTextField txtTitulo, txtAutor, txtISBN, txtCategoria;
 
-    public TelaCadastroLivros() {
+    public TelaCadastroLivro() {
         setTitle("Cadastro de Livros");
         setSize(400, 300);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -73,15 +75,15 @@ public class TelaCadastroLivros extends JFrame {
 
         try {
             // Criar um objeto Livro
-            Livros livros = new Livros();
-            livros.setTitulo(titulo);
-            livros.setAutor(autor);
-            livros.setISBN(isbn);
-            livros.setCategoria(categoria);
+            Livro livro = new Livro();
+            livro.setTitulo(titulo);
+            livro.setAutor(autor);
+            livro.setISBN(isbn);
+            livro.setCategoria(categoria);
 
             // Chamar a DAO para salvar
-            LivrosDAO dao = new LivrosDAO();
-            dao.inserir(livros);
+            LivroDAO dao = new LivroDAO();
+            dao.inserir(livro);
 
             // Exibir mensagem de sucesso
             JOptionPane.showMessageDialog(this, "Livro salvo com sucesso!");
@@ -106,6 +108,6 @@ public class TelaCadastroLivros extends JFrame {
     }
 
     public static void main(String[] args) {
-        new TelaCadastroLivros().setVisible(true);
+        new TelaCadastroLivro().setVisible(true);
     }
 }

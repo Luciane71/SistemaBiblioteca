@@ -1,4 +1,6 @@
-import conexao.Conexao;
+package br.com.biblioteca.view;
+
+import br.com.biblioteca.config.Conexao;
 import javax.swing.*;
 import java.sql.*;
 

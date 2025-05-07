@@ -1,11 +1,22 @@
-package beans;
+package br.com.biblioteca.model;
 
-public class Livros {
+public class Livro {
     private int id;
     private String titulo;
     private String autor;
-    private String ISBN;
+    private String isbn;
     private String categoria;
+
+    public Livro() {
+    }
+
+    public Livro(int id, String titulo, String autor, String isbn, String categoria) {
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.categoria = categoria;
+    }
 
     public int getId() {
         return id;
@@ -31,12 +42,12 @@ public class Livros {
         this.autor = autor;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getCategoria() {
@@ -46,6 +57,19 @@ public class Livros {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Livro{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", categoria='" + categoria + '\'' +
+                '}';
+    }
+
+    public void setISBN(String bn) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

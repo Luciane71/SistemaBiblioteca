@@ -1,33 +1,52 @@
-package beans;
+package br.com.biblioteca.model;
+
+import java.time.LocalDate;
 
 public class Emprestimo {
+    private int id;
+    private Usuario usuario;
+    private Livro livro;
+    private LocalDate dataEmprestimo;
+    private LocalDate dataDevolucao;
 
-    private String usuario;
-    private String livro;
-    private String dataEmprestimo;
+    // Getters e setters
+    public int getId() {
+        return id;
+    }
 
-    // Getters e Setters
-    public String getUsuario() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public String getLivro() {
+    public Livro getLivro() {
         return livro;
     }
 
-    public void setLivro(String livro) {
+    public void setLivro(Livro livro) {
         this.livro = livro;
     }
 
-    public String getDataEmprestimo() {
+    public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
     }
 
-    public void setDataEmprestimo(String dataEmprestimo) {
+    public void setDataEmprestimo(LocalDate dataEmprestimo) {
         this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
     }
 }

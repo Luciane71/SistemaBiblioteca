@@ -1,134 +1,135 @@
-package dao;
+package br.com.biblioteca.dao;
 
-import beans.Livros;
-import conexao.Conexao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import br.com.biblioteca.model.Livro;
+import br.com.biblioteca.config.Conexao;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class LivrosDAO {
+public class LivroDAO {
 
-    private Conexao conexao;
-    private Connection conn;
+    private static final Logger logger = Logger.getLogger(LivroDAO.class.getName());
+    private final Connection conn;
 
-    public LivrosDAO() {
-        this.conexao = new Conexao();
-        this.conn = this.conexao.getConexao();
+    public LivroDAO() {
+        this.conn = Conexao.getConexao();
     }
 
-    public Livros getLivros(int id) {
+    public Livro buscarPorId(int id) {
         String sql = "SELECT * FROM livros WHERE id = ?";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            Livros livros = new Livros();
-
-            if (rs.next()) {
-                livros.setId(rs.getInt("id"));
-                livros.setTitulo(rs.getString("titulo"));
-                livros.setAutor(rs.getString("autor"));
-                livros.setISBN(rs.getString("isbn"));
-                livros.setCategoria(rs.getString("categoria"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearLivro(rs);
+                }
             }
-
-            return livros;
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar livro: " + e.getMessage());
-            return null;
+        } catch (SQLException e) {
+            logger.severe("Erro ao buscar livro por ID: " + e.getMessage());
         }
+        return null;
     }
 
-    public List<Livros> getLivros(String titulo) {
+    public List<Livro> buscarPorTitulo(String titulo) {
         String sql = "SELECT * FROM livros WHERE titulo LIKE ?";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
+        List<Livro> livros = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + titulo + "%");
-            ResultSet rs = stmt.executeQuery();
-
-            List<Livros> listaLivros = new ArrayList<>();
-            while (rs.next()) {
-                Livros livros = new Livros();
-                livros.setId(rs.getInt("id"));
-                livros.setTitulo(rs.getString("titulo"));
-                livros.setAutor(rs.getString("autor"));
-                livros.setISBN(rs.getString("isbn"));
-                livros.setCategoria(rs.getString("categoria"));
-                listaLivros.add(livros);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    livros.add(mapearLivro(rs));
+                }
             }
-
-            return listaLivros;
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar livros: " + e.getMessage());
-            return null;
+        } catch (SQLException e) {
+            logger.severe("Erro ao buscar livros por título: " + e.getMessage());
         }
+        return livros;
     }
 
-    public void inserir(Livros livros) {
-        String sql = "INSERT INTO livros (titulo, autor, isbn, categoria) VALUES (?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
-            stmt.setString(1, livros.getTitulo());
-            stmt.setString(2, livros.getAutor());
-            stmt.setString(3, livros.getISBN());
-            stmt.setString(4, livros.getCategoria());
-            stmt.execute();
-        } catch (Exception e) {
-            System.out.println("Erro ao inserir livro: " + e.getMessage());
-        }
-    }
-
-    public void editar(Livros livros) {
-        String sql = "UPDATE livros SET titulo = ?, autor = ?, isbn = ?, categoria = ? WHERE id = ?";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
-            stmt.setString(1, livros.getTitulo());
-            stmt.setString(2, livros.getAutor());
-            stmt.setString(3, livros.getISBN());
-            stmt.setString(4, livros.getCategoria());
-            stmt.setInt(5, livros.getId());
-            stmt.execute();
-        } catch (Exception e) {
-            System.out.println("Erro ao editar livro: " + e.getMessage());
-        }
-    }
-
-    public void excluir(int id) {
-        String sql = "DELETE FROM livros WHERE id = ?";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.execute();
-        } catch (Exception e) {
-            System.out.println("Erro ao excluir livro: " + e.getMessage());
-        }
-    }
-
-    public List<Livros> getLivrosPorCategoria(String categoria) {
+    public List<Livro> buscarPorCategoria(String categoria) {
         String sql = "SELECT * FROM livros WHERE categoria LIKE ?";
-        try {
-            PreparedStatement stmt = this.conn.prepareStatement(sql);
+        List<Livro> livros = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + categoria + "%");
-            ResultSet rs = stmt.executeQuery();
-
-            List<Livros> listaLivros = new ArrayList<>();
-            while (rs.next()) {
-                Livros livros = new Livros();
-                livros.setId(rs.getInt("id"));
-                livros.setTitulo(rs.getString("titulo"));
-                livros.setAutor(rs.getString("autor"));
-                livros.setISBN(rs.getString("isbn"));
-                livros.setCategoria(rs.getString("categoria"));
-                listaLivros.add(livros);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    livros.add(mapearLivro(rs));
+                }
             }
-
-            return listaLivros;
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar livros por categoria: " + e.getMessage());
-            return null;
+        } catch (SQLException e) {
+            logger.severe("Erro ao buscar livros por categoria: " + e.getMessage());
         }
+        return livros;
+    }
+
+    public boolean inserir(Livro livro) {
+        String sql = "INSERT INTO livros (titulo, autor, isbn, categoria) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, livro.getTitulo());
+            stmt.setString(2, livro.getAutor());
+            stmt.setString(3, livro.getIsbn());
+            stmt.setString(4, livro.getCategoria());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("Erro ao inserir livro: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean atualizar(Livro livro) {
+        String sql = "UPDATE livros SET titulo = ?, autor = ?, isbn = ?, categoria = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, livro.getTitulo());
+            stmt.setString(2, livro.getAutor());
+            stmt.setString(3, livro.getIsbn());
+            stmt.setString(4, livro.getCategoria());
+            stmt.setInt(5, livro.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("Erro ao atualizar livro: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean excluir(int id) {
+        String sql = "DELETE FROM livros WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("Erro ao excluir livro: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public List<Livro> listar() {
+        List<Livro> livros = new ArrayList<>();
+        String sql = "SELECT * FROM livros";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                livros.add(mapearLivro(rs));
+            }
+        } catch (SQLException e) {
+            logger.severe("Erro ao listar livros: " + e.getMessage());
+        }
+
+        return livros;
+    }
+
+    private Livro mapearLivro(ResultSet rs) throws SQLException {
+        Livro livro = new Livro();
+        livro.setId(rs.getInt("id"));
+        livro.setTitulo(rs.getString("titulo"));
+        livro.setAutor(rs.getString("autor"));
+        livro.setIsbn(rs.getString("isbn"));
+        livro.setCategoria(rs.getString("categoria"));
+        return livro;
     }
 }

@@ -1,4 +1,6 @@
-import conexao.Conexao;
+package br.com.biblioteca.view;
+
+import br.com.biblioteca.config.Conexao;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -6,7 +8,7 @@ import java.sql.*;
 
 public class TelaListaUsuarios extends JFrame {
 
-    private JTable tableUsuarios;
+    private final JTable tableUsuarios;
 
     public TelaListaUsuarios() {
         setTitle("Lista de Usuários");

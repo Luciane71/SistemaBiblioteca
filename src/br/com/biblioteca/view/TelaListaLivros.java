@@ -1,5 +1,6 @@
+package br.com.biblioteca.view;
 
-import conexao.Conexao;
+import br.com.biblioteca.config.Conexao;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

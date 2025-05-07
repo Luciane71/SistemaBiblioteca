@@ -1,3 +1,5 @@
+package br.com.biblioteca.view;
+
 import javax.swing.*;
 
 public class TelaMenuPrincipal extends JFrame {
@@ -43,7 +45,7 @@ public class TelaMenuPrincipal extends JFrame {
         add(btnListaUsuarios);
 
         // Ações dos botões
-        btnCadastroLivros.addActionListener(e -> new TelaCadastroLivros().setVisible(true));
+        btnCadastroLivros.addActionListener(e -> new TelaCadastroLivro().setVisible(true));
         btnEmprestimos.addActionListener(e -> new TelaEmprestimos().setVisible(true));
         btnDevolucoes.addActionListener(e -> new TelaDevolucoes().setVisible(true));
         btnCadastroUsuario.addActionListener(e -> new TelaCadastroUsuario().setVisible(true));

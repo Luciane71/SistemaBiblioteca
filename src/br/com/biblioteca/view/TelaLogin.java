@@ -1,5 +1,6 @@
+package br.com.biblioteca.view;
 
-import dao.UsuarioDAO;
+import br.com.biblioteca.dao.UsuarioDAO;
 import javax.swing.*;
 
 

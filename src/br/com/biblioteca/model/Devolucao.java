@@ -1,13 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package beans;
+package br.com.biblioteca.model;
 
-/**
- *
- * @author Administrator
- */
+import java.time.LocalDate;
+
 public class Devolucao {
-    
+    private Emprestimo emprestimo;
+    private LocalDate dataDevolucao;
+
+    public Devolucao() {
+    }
+
+    public Devolucao(Emprestimo emprestimo, LocalDate dataDevolucao) {
+        this.emprestimo = emprestimo;
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public Emprestimo getEmprestimo() {
+        return emprestimo;
+    }
+
+    public void setEmprestimo(Emprestimo emprestimo) {
+        this.emprestimo = emprestimo;
+    }
+
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    @Override
+    public String toString() {
+        return "Devolucao{" +
+                "emprestimo=" + emprestimo +
+                ", dataDevolucao=" + dataDevolucao +
+                '}';
+    }
 }

@@ -1,7 +1,8 @@
+package br.com.biblioteca.view;
 
 import javax.swing.*;
-import beans.Usuario;
-import dao.UsuarioDAO;
+import br.com.biblioteca.dao.UsuarioDAO;
+import br.com.biblioteca.model.Usuario;
 import javax.swing.JOptionPane;
 
 public class TelaCadastroUsuario extends JFrame {
